@@ -97,6 +97,21 @@ python deep_eye.py --version
 
 ## Recent Changes
 
+- **SVG CERIST Logo & Vulnerability Digest - November 4, 2025**
+  - Created professional SVG vector logo for CERIST (scalable, high-quality)
+  - Logo features shield icon, gradient design, and full organization name
+  - **Vulnerability Digest HTML Report**: Automatically generated for every scan
+    - Beautiful standalone HTML file showing all detected vulnerabilities
+    - Displays vulnerable code snippets and evidence
+    - Shows attack payloads, HTTP requests/responses
+    - Expandable/collapsible vulnerability cards with severity color-coding
+    - Includes remediation guidance for each vulnerability
+    - Generated with unique filenames in `reports/` folder
+    - For multilingual scans, creates separate digests per language (en, fr, ar)
+  - CERIST branding embedded throughout all reports
+  - Location: `reports/vulnerability_digest_*.html`
+  - Perfect for detailed security analysis and code review
+
 - **Multi-Language Report Generation Added - November 4, 2025**
   - Added `--multilingual` command-line flag to generate reports in all languages
   - Reports are now available in:
