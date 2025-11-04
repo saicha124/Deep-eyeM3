@@ -47,6 +47,56 @@ class ReportGenerator:
         else:
             raise ValueError(f"Unsupported format: {format}")
     
+    def generate_multilingual(self, results: Dict, output_path: str, format: str = 'html'):
+        """
+        Generate security reports in all available languages (English, French, Arabic).
+        
+        Args:
+            results: Scan results
+            output_path: Output file path (will be modified with language suffix)
+            format: Report format (html, pdf, json)
+        
+        Returns:
+            List of generated report paths
+        """
+        generated_reports = []
+        languages = ['en', 'fr', 'ar']
+        language_names = {'en': 'English', 'fr': 'French', 'ar': 'Arabic'}
+        
+        # Parse output path
+        path_obj = Path(output_path)
+        stem = path_obj.stem
+        suffix = path_obj.suffix
+        parent = path_obj.parent
+        
+        logger.info(f"Generating multi-language reports in: English, French, Arabic")
+        
+        for lang in languages:
+            # Create language-specific filename
+            lang_filename = f"{stem}_{lang}{suffix}"
+            lang_output_path = parent / lang_filename
+            
+            # Temporarily set the language for this report
+            original_language = self.translator.language
+            self.translator = Translator(lang)
+            
+            # Generate report in this language
+            if format == 'json':
+                self._generate_json(results, str(lang_output_path))
+            elif format == 'html':
+                self._generate_html(results, str(lang_output_path))
+            elif format == 'pdf':
+                self._generate_pdf(results, str(lang_output_path))
+            
+            generated_reports.append(str(lang_output_path))
+            logger.info(f"✓ {language_names[lang]} report: {lang_output_path}")
+            
+            # Restore original language
+            self.translator = Translator(original_language)
+        
+        logger.info(f"Successfully generated {len(generated_reports)} multi-language reports")
+        return generated_reports
+    
     def _generate_json(self, results: Dict, output_path: str):
         """Generate JSON report."""
         with open(output_path, 'w') as f:
@@ -415,7 +465,7 @@ class ReportGenerator:
         """Get HTML report template."""
         return '''
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{ language }}" dir="{% if language == 'ar' %}rtl{% else %}ltr{% endif %}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -428,10 +478,11 @@ class ReportGenerator:
         }
         
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: {% if language == 'ar' %}'Arial', 'Tahoma', sans-serif{% else %}'Segoe UI', Tahoma, Geneva, Verdana, sans-serif{% endif %};
             line-height: 1.6;
             color: #333;
             background-color: #f5f5f5;
+            direction: {% if language == 'ar' %}rtl{% else %}ltr{% endif %};
         }
         
         .container {

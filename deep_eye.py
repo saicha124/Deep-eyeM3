@@ -60,6 +60,9 @@ Examples:
   Verbose mode:
     python deep_eye.py -u https://example.com -v
   
+  Generate multilingual reports (English, French, Arabic):
+    python deep_eye.py -u https://example.com --multilingual
+  
 Note: All scan options are configured in config.yaml
       Use --config to specify a custom configuration file
         """
@@ -96,6 +99,12 @@ Note: All scan options are configured in config.yaml
         '--no-banner',
         action='store_true',
         help='Disable banner display'
+    )
+    
+    parser.add_argument(
+        '--multilingual',
+        action='store_true',
+        help='Generate reports in all languages (English, French, Arabic)'
     )
     
     return parser.parse_args()
@@ -235,13 +244,28 @@ def main():
             
             output_path = str(Path(output_dir) / output_filename)
             
-            report_gen.generate(
-                results=results,
-                output_path=output_path,
-                format=report_format
-            )
-            
-            console.print(f"[bold green]✓[/bold green] Report saved to: {output_path}")
+            # Check if multilingual flag is set
+            if args.multilingual:
+                console.print("[bold cyan]📝 Generating multi-language reports (English, French, Arabic)...[/bold cyan]")
+                generated_reports = report_gen.generate_multilingual(
+                    results=results,
+                    output_path=output_path,
+                    format=report_format
+                )
+                
+                console.print(f"\n[bold green]✓ Reports generated successfully:[/bold green]")
+                for report_path in generated_reports:
+                    lang_suffix = report_path.split('_')[-1].split('.')[0]
+                    lang_name = {'en': '🇬🇧 English', 'fr': '🇫🇷 French', 'ar': '🇸🇦 Arabic'}.get(lang_suffix, lang_suffix)
+                    console.print(f"  • {lang_name}: {report_path}")
+            else:
+                report_gen.generate(
+                    results=results,
+                    output_path=output_path,
+                    format=report_format
+                )
+                
+                console.print(f"[bold green]✓[/bold green] Report saved to: {output_path}")
         
         # Display summary
         vuln_count = len(results.get('vulnerabilities', []))

@@ -54,6 +54,9 @@ python deep_eye.py -u https://example.com
 # Scan with verbose output
 python deep_eye.py -u https://example.com -v
 
+# Generate multilingual reports (English, French, Arabic)
+python deep_eye.py -u https://example.com --multilingual
+
 # Use custom config file
 python deep_eye.py -c custom_config.yaml
 
@@ -78,6 +81,20 @@ python deep_eye.py --version
 - `data/` - Session and model data (gitignored)
 
 ## Recent Changes
+
+- **Multi-Language Report Generation Added - November 4, 2025**
+  - Added `--multilingual` command-line flag to generate reports in all languages
+  - Reports are now available in:
+    - 🇬🇧 **English** (en)
+    - 🇫🇷 **French** (fr) 
+    - 🇸🇦 **Arabic** (ar)
+  - When using `--multilingual`, three reports are generated with language suffixes:
+    - `report_en.html` - English report
+    - `report_fr.html` - French report (Rapport en Français)
+    - `report_ar.html` - Arabic report (تقرير بالعربية)
+  - All vulnerability details, remediation steps, and code examples fully translated
+  - Usage: `python deep_eye.py -u https://example.com --multilingual`
+  - Perfect for international teams and compliance requirements
 
 - **Security Misconfiguration Remediation Guide Added - November 4, 2025**
   - Added comprehensive remediation guide for Security Misconfiguration vulnerabilities
