@@ -91,7 +91,8 @@ class AIProviderManager:
             Generated response
         """
         if not self.active_provider:
-            logger.error("No active AI provider")
+            # Only log as debug since AI may be intentionally disabled
+            logger.debug("No active AI provider - using default payloads")
             return ""
         
         try:

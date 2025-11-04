@@ -54,7 +54,8 @@ class MLAnomalyDetector:
         anomalies = []
         
         if len(self.baseline_data) == 0:
-            logger.warning("No baseline data available. Train model first.")
+            # Only log as debug since ML may be intentionally disabled
+            logger.debug("No baseline data available - ML anomaly detection disabled")
             return anomalies
         
         # Extract features from response
