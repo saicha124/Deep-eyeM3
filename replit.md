@@ -97,6 +97,20 @@ python deep_eye.py --version
 
 ## Recent Changes
 
+- **Template Directory Created - November 5, 2025**
+  - Created missing `templates/` directory required for report generation
+  - Created `templates/vulnerability_digest.html` with comprehensive vulnerability reporting template
+  - Fixed error: "Vulnerability digest template not found"
+  - Template features:
+    - Interactive expandable/collapsible vulnerability cards
+    - Color-coded severity badges (Critical, High, Medium, Low, Info)
+    - Copy-to-clipboard functionality for code blocks
+    - Responsive design for mobile and desktop
+    - Beautiful gradient styling and professional layout
+    - Comprehensive vulnerability details (description, evidence, payload, request/response, remediation)
+  - All report generation now works correctly for HTML, PDF, and JSON formats
+  - Multilingual report generation fully functional
+
 - **Scanner Updates & Comprehensive Testing - November 5, 2025**
   - **Enhanced Scanner Propagation**: Updated SQL Injection, XSS, and Command Injection scanners with complete enhanced capture
     - All three scanners now use create_vulnerability() with payload_info, interaction, and detector metadata
