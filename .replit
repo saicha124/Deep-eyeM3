@@ -27,7 +27,7 @@ outputType = "console"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "python deep_eye.py --help"
+args = "python deep_eye.py --version"
 
 [[ports]]
 localPort = 8888
