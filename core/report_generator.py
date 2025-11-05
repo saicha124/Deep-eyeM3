@@ -7,7 +7,7 @@ import json
 from datetime import datetime
 from pathlib import Path
 from typing import Dict, List
-from jinja2 import Template
+from jinja2 import Environment, select_autoescape
 from utils.logger import get_logger
 from core.remediation_guide import RemediationGuide
 from utils.translations import Translator
@@ -111,7 +111,10 @@ class ReportGenerator:
     def _generate_html(self, results: Dict, output_path: str):
         """Generate HTML report with multi-language support."""
         template_content = self._get_html_template()
-        template = Template(template_content)
+        
+        # Create Jinja environment with autoescaping enabled for security
+        env = Environment(autoescape=select_autoescape(['html', 'xml']))
+        template = env.from_string(template_content)
         
         # Read and encode CERIST logo as base64
         import base64
@@ -197,7 +200,9 @@ class ReportGenerator:
         with open(template_path, 'r', encoding='utf-8') as f:
             template_content = f.read()
         
-        template = Template(template_content)
+        # Create Jinja environment with autoescaping enabled for security
+        env = Environment(autoescape=select_autoescape(['html', 'xml']))
+        template = env.from_string(template_content)
         
         # Read and encode CERIST logo (try SVG first, fallback to PNG)
         import base64
