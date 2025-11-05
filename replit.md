@@ -111,6 +111,14 @@ python deep_eye.py --version
     - Changed from nested `interaction.request.method` to flat `interaction.method`
     - Template now correctly accesses: method, url, headers, request_body, status_code, response_body, latency
     - Fixed Jinja2 "dict object has no attribute 'request'" error
+  - **Fixed payload source display**: Corrected nested origin structure
+    - Changed from `payload_info.file` to `payload_info.origin.file`
+    - Now properly displays: "Payload Source: core/ai_payload_generator.py (Line 175)"
+    - Added context display showing payload purpose (e.g., "SQL injection error-based detection attempt")
+  - **Enhanced detection source display**: Made detector fields conditional
+    - Supports both `lines` string and `line_start`/`line_end` numeric formats
+    - Displays module, function, file, and line information when available
+    - Flexible template handles different detector data structures
   - **Verified enhance_vulnerability function**: Already has correct field copying
     - code_example, solution, steps_to_fix, exploit_example, references
     - All fields properly copied from remediation_details to main vulnerability object
