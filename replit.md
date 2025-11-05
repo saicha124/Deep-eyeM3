@@ -98,6 +98,23 @@ python deep_eye.py --version
 
 ## Recent Changes
 
+- **Detection Code Display Enhanced - November 5, 2025**
+  - ✅ **Automatic Code Snippet Extraction**: Reports now automatically extract and display the actual scanner code
+  - **Enhanced Detection Source Section** in vulnerability reports:
+    - **Module**: Shows which scanner module detected the vulnerability (e.g., `core.vulnerability_scanner`)
+    - **Function**: Shows the detection function name (e.g., `_check_security_headers`)
+    - **File & Lines**: Shows exact file location and line range (e.g., `core/vulnerability_scanner.py (Lines 803-856)`)
+    - **📝 Detection Code**: Automatically extracts and displays the actual Python code from those lines
+      - Shows up to 50 lines of the detection logic
+      - Includes copy-to-clipboard functionality
+      - Syntax-highlighted in dark theme for readability
+  - **Example**: Security Misconfiguration scanner displays its complete detection logic (lines 803-856)
+  - **Technical Implementation**:
+    - `extract_code_snippet()` function in `vulnerability_helper.py` reads source files
+    - `enhance_detector_with_code()` automatically adds code snippets to detector metadata
+    - Template displays code in professional code block with line numbers
+  - **Benefit**: Security researchers and developers can see exactly how vulnerabilities were detected
+
 - **Project Import Completed - November 5, 2025**
   - Successfully completed migration to Replit environment
   - **Python Environment**: Python 3.11 installed and configured
@@ -114,6 +131,7 @@ python deep_eye.py --version
   - **Directory Structure**: Created required directories (reports/, logs/, data/, templates/)
   - **Version Control**: Updated .gitignore for Python projects
   - **Dependencies**: Cleaned up requirements.txt (removed duplicates)
+  - **Vulnerability Digest Template**: Added comprehensive HTML template to `templates/` folder
   - **Status**: ✅ All systems operational and ready for security scanning
   - **Test**: Successfully ran `python deep_eye.py --version` - outputs "Deep Eye v1.3.0 (Hestia)"
 
