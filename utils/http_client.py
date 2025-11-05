@@ -3,7 +3,8 @@ HTTP Client for making requests
 """
 
 import requests
-from typing import Dict, Optional
+import time
+from typing import Dict, Optional, Tuple
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
 from utils.logger import get_logger
@@ -141,4 +142,83 @@ class HTTPClient:
             return response
         except requests.exceptions.RequestException as e:
             logger.debug(f"OPTIONS request failed for {url}: {e}")
+            return None
+    
+    @staticmethod
+    def capture_interaction(
+        response: Optional[requests.Response],
+        request_body: Optional[str] = None,
+        start_time: Optional[float] = None
+    ) -> Optional[Dict]:
+        """
+        Capture detailed HTTP request/response information for vulnerability reports.
+        
+        Args:
+            response: The Response object from requests
+            request_body: The request body (if any)
+            start_time: The time when the request started (for latency calculation)
+        
+        Returns:
+            Dictionary with interaction details or None if response is None
+        """
+        if response is None:
+            return None
+        
+        try:
+            # Calculate latency
+            latency = None
+            if start_time is not None:
+                latency = time.time() - start_time
+            
+            # Extract request details
+            request = response.request
+            method = request.method
+            url = request.url
+            
+            # Get request headers (sanitize sensitive data)
+            request_headers = {}
+            if hasattr(request, 'headers'):
+                request_headers = dict(request.headers)
+                # Redact sensitive headers
+                for sensitive_key in ['Authorization', 'Cookie', 'X-API-Key', 'API-Key']:
+                    if sensitive_key in request_headers:
+                        request_headers[sensitive_key] = '[REDACTED]'
+            
+            # Get request body
+            if request_body is None and hasattr(request, 'body'):
+                request_body = request.body
+                if request_body and isinstance(request_body, bytes):
+                    try:
+                        request_body = request_body.decode('utf-8', errors='replace')
+                    except:
+                        request_body = '[Binary Data]'
+            
+            # Truncate large request bodies
+            if request_body and len(str(request_body)) > 5000:
+                request_body = str(request_body)[:5000] + '\n... [truncated]'
+            
+            # Get response body (truncated for large responses)
+            response_body = ''
+            try:
+                if response.text:
+                    response_body = response.text
+                    if len(response_body) > 5000:
+                        response_body = response_body[:5000] + '\n... [truncated]'
+            except:
+                response_body = '[Could not decode response]'
+            
+            interaction = {
+                'method': method,
+                'url': url,
+                'headers': request_headers,
+                'request_body': request_body,
+                'status_code': response.status_code,
+                'response_body': response_body,
+                'latency': latency
+            }
+            
+            return interaction
+            
+        except Exception as e:
+            logger.debug(f"Failed to capture interaction details: {e}")
             return None
