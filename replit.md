@@ -98,6 +98,30 @@ python deep_eye.py --version
 
 ## Recent Changes
 
+- **Color-Coded Solution Display Added - November 5, 2025**
+  - ✅ **Vulnerable vs Solution Code Comparison**: Reports now show side-by-side code comparison
+  - **Visual Color Distinction**:
+    - **❌ Vulnerable Code**: Displayed in RED (light red background #fff5f5, red border #e53e3e)
+    - **✅ Solution Code**: Displayed in GREEN (light green background #f0fff4, green border #38a169)
+    - **Side-by-side layout** on desktop, stacked on mobile devices
+  - **Framework-Specific Examples** for Security Headers:
+    - **Flask**: Shows how to add security headers using `@app.after_request`
+    - **Express.js**: Shows how to use `helmet` middleware for header protection
+    - **Nginx**: Shows server configuration with proper security headers
+    - **Django**: Shows CSP middleware configuration in settings.py
+    - **Apache**: Shows `.htaccess` header configuration
+  - **📊 Code Comparison Section** in reports:
+    - Left side: Vulnerable code showing the security issue
+    - Right side: Fixed code showing the proper implementation
+    - Both sides have copy-to-clipboard buttons
+    - Clear visual distinction makes it easy to understand the fix
+  - **Template Support**:
+    - `vulnerable_code` and `solution_code` fields in vulnerability data
+    - Automatic display when both fields are present
+    - Falls back to regular remediation if not provided
+  - **Example Output**: Security Misconfiguration reports show exactly what's missing and how to add it
+  - **Benefit**: Developers can instantly see what needs to be fixed and copy the solution code
+
 - **Detection Code Display Enhanced - November 5, 2025**
   - ✅ **Automatic Code Snippet Extraction**: Reports now automatically extract and display the actual scanner code
   - **Enhanced Detection Source Section** in vulnerability reports:
