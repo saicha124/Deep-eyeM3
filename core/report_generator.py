@@ -599,17 +599,19 @@ class ReportGenerator:
         }
         
         .header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            background: white;
+            color: #333;
             padding: 40px;
             border-radius: 10px;
             margin-bottom: 30px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border: 2px solid #e0e0e0;
         }
         
         .header h1 {
             font-size: 2.5em;
             margin-bottom: 10px;
+            color: #2c3e50;
         }
         
         .metadata {
