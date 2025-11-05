@@ -99,26 +99,38 @@ python deep_eye.py --version
 ## Recent Changes
 
 - **Vulnerability Digest Template Enhanced - November 5, 2025**
-  - Created comprehensive `templates/vulnerability_digest.html` template
-  - **Payload Display Enhancement**: Payloads now show with exact source tracking
-    - **Format**: "Payloads Used (Line 175):" displays the line number in the source file
+  - Created comprehensive `templates/vulnerability_digest.html` template with complete attack chain visualization
+  - **Payload Display Enhancement**: Shows exact line numbers in heading and detailed source tracking
+    - **Format**: "⚡ Payload Used (Line 175)" - Line number displayed in section heading
     - Shows complete payload code block with copy-to-clipboard functionality
-    - Displays payload source information:
+    - **Payload Source Section**:
       - Source File: (e.g., `core/ai_payload_generator.py`)
-      - Line Number: (e.g., Line 175)
-      - Parameter: The attacked parameter name
-      - Context: Attack context description
+      - Line Number: Where the payload was generated (e.g., Line 175)
+      - Parameter Tested: Which parameter was attacked
+      - Attack Context: Description of the attack attempt
+  - **Detection Source Enhancement**: Shows WHERE in the scanner code the vulnerability was found
+    - **Module**: Scanner module that detected it (e.g., `core.vulnerability_scanner`)
+    - **Function**: Specific detection function (e.g., `_check_security_headers`)
+    - **File**: Scanner source file with line range (e.g., `core/vulnerability_scanner.py (Lines 803-856)`)
+    - Automatically constructs file path from module name if not explicitly provided
   - **Complete Attack Chain Visualization**:
-    - ⚡ Payload Used → Shows the exact attack payload
-    - 📍 Payload Source → Shows where it came from
-    - 📤 HTTP Request → Full request details
-    - 📥 HTTP Response → Full response details
-    - 🔬 Detection Source → Where vulnerability was detected
-    - 🔧 Remediation → How to fix it
-  - Matches the PortSwigger lab attack format exactly
-  - Beautiful, professional design with gradient backgrounds
-  - Interactive features: expandable sections, copy buttons
-  - All vulnerability details displayed in organized, color-coded cards
+    - 📋 Description → What the vulnerability is
+    - 🔍 Evidence → Proof of vulnerability
+    - ⚡ Payload Used (Line X) → The exact attack payload with line number
+    - 📍 Payload Source → Where the payload originated
+    - 📤 HTTP Request → Full request details with headers and body
+    - 📥 HTTP Response → Status code, latency, and response body
+    - 🔬 Detection Source → Scanner code location (file + line range)
+    - 🔧 Remediation → Complete fix with code examples and references
+  - **Professional Reporting Features**:
+    - Matches PortSwigger lab attack format exactly
+    - Beautiful gradient backgrounds with white content cards
+    - Interactive copy-to-clipboard buttons for all code blocks
+    - Color-coded severity badges (Critical, High, Medium, Low)
+    - Responsive grid layout for severity summary
+    - Clear section headers with emoji icons
+    - All vulnerability details in organized, expandable cards
+  - Perfect for security audits, educational purposes, and compliance reporting
 
 - **Replit Migration Completed - November 5, 2025**
   - Successfully migrated Deep Eye Scanner to Replit environment
