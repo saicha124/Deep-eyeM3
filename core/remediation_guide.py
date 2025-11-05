@@ -1708,6 +1708,9 @@ ERROR CODE REFERENCE:
         if 'references' in remediation_details:
             vulnerability['references'] = remediation_details['references']
         
+        # Preserve vulnerable_code and solution_code if present (for color-coded comparison)
+        # These fields are already in the vulnerability dict, just make sure they're accessible
+        
         # Keep original remediation as summary
         if 'remediation' not in vulnerability or not vulnerability['remediation']:
             vulnerability['remediation'] = remediation_details['steps'][0]

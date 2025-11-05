@@ -1,0 +1,54 @@
+📝 Detection Code (Lines 803-856)
+Copy
+    def _check_security_headers(self, url: str) -> List[Dict]:
+        """Check for missing security headers with enhanced reporting."""
+        import time
+        from core.vulnerability_helper import create_vulnerability
+        
+        vulnerabilities = []
+        
+        # Detection source information
+        DETECTOR_LOCAL = {
+            'module': 'core.vulnerability_scanner',
+            'function': '_check_security_headers',
+            'lines': (803, 856)
+        }
+        
+        try:
+            start_time = time.time()
+            response = self.http_client.get(url)
+            if not response:
+                return vulnerabilities
+            
+            # Capture HTTP interaction details
+            interaction = self.http_client.capture_interaction(
+                response,
+                start_time=start_time
+            )
+            
+            headers = response.headers
+            
+            security_headers = {
+                'X-Frame-Options': ('Clickjacking protection missing', 'medium'),
+                'X-Content-Type-Options': ('MIME sniffing protection missing', 'medium'),
+                'Strict-Transport-Security': ('HSTS not enforced', 'medium'),
+                'Content-Security-Policy': ('CSP not implemented', 'medium'),
+                'X-XSS-Protection': ('XSS protection header missing', 'low')
+            }
+            
+            for header, (description, severity) in security_headers.items():
+                if header not in headers:
+                    # Payload information (header check context)
+                    payload_info = {
+                        'payload': f'Header check: {header}',
+                        'origin': {
+                            'file': 'core/vulnerability_scanner.py',
+                            'line': 814
+                        },
+                        'parameter': header,
+                        'context': 'Security header presence validation'
+                    }
+                    
+                    # Generate vulnerable vs solution code examples
+
+... [4 more lines]
