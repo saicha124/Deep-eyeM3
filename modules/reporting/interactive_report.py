@@ -58,24 +58,80 @@ class InteractiveReportGenerator:
     <style>
         * {{ margin: 0; padding: 0; box-sizing: border-box; }}
         
+        :root {{
+            --bg-gradient-start: #667eea;
+            --bg-gradient-end: #764ba2;
+            --container-bg: #ffffff;
+            --card-bg: #ffffff;
+            --text-primary: #333333;
+            --text-secondary: #666666;
+            --border-color: #ecf0f1;
+            --shadow: 0 2px 10px rgba(0,0,0,0.1);
+            --shadow-hover: 0 5px 20px rgba(0,0,0,0.15);
+            --header-bg: #2c3e50;
+            --accent-color: #3498db;
+        }}
+        
+        [data-theme="dark"] {{
+            --bg-gradient-start: #1a1a1a;
+            --bg-gradient-end: #2d2d2d;
+            --container-bg: #1e1e1e;
+            --card-bg: #2d2d2d;
+            --text-primary: #e0e0e0;
+            --text-secondary: #b0b0b0;
+            --border-color: #404040;
+            --shadow: 0 2px 10px rgba(0,0,0,0.3);
+            --shadow-hover: 0 5px 20px rgba(0,0,0,0.4);
+            --header-bg: #1a1a1a;
+        }}
+        
         body {{
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
             padding: 20px;
-            color: #333;
+            color: var(--text-primary);
+            transition: all 0.3s ease;
         }}
         
         .container {{
             max-width: 1400px;
             margin: 0 auto;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            background: var(--container-bg);
+            border-radius: 15px;
+            box-shadow: var(--shadow-hover);
             overflow: hidden;
         }}
         
+        .controls-bar {{
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }}
+        
+        .control-btn {{
+            background: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
+        }}
+        
+        .control-btn:hover {{
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }}
+        
         .header {{
-            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            background: var(--header-bg);
             color: white;
             padding: 30px;
             text-align: center;
@@ -96,21 +152,22 @@ class InteractiveReportGenerator:
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 20px;
             padding: 30px;
-            background: #f8f9fa;
+            background: var(--container-bg);
         }}
         
         .stat-card {{
-            background: white;
+            background: var(--card-bg);
             padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-radius: 12px;
+            box-shadow: var(--shadow);
             text-align: center;
-            transition: transform 0.3s;
+            transition: all 0.3s ease;
+            border: 1px solid var(--border-color);
         }}
         
         .stat-card:hover {{
             transform: translateY(-5px);
-            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+            box-shadow: var(--shadow-hover);
         }}
         
         .stat-card .number {{
@@ -120,7 +177,7 @@ class InteractiveReportGenerator:
         }}
         
         .stat-card .label {{
-            color: #666;
+            color: var(--text-secondary);
             font-size: 1.1em;
         }}
         
@@ -132,13 +189,13 @@ class InteractiveReportGenerator:
         
         .controls {{
             padding: 30px;
-            background: white;
-            border-bottom: 2px solid #ecf0f1;
+            background: var(--container-bg);
+            border-bottom: 2px solid var(--border-color);
         }}
         
         .controls h2 {{
             margin-bottom: 20px;
-            color: #2c3e50;
+            color: var(--text-primary);
         }}
         
         .filter-group {{
@@ -150,31 +207,34 @@ class InteractiveReportGenerator:
         
         .filter-btn {{
             padding: 10px 20px;
-            border: 2px solid #3498db;
-            background: white;
-            color: #3498db;
-            border-radius: 5px;
+            border: 2px solid var(--accent-color);
+            background: var(--container-bg);
+            color: var(--accent-color);
+            border-radius: 8px;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
             font-size: 1em;
+            font-weight: 500;
         }}
         
         .filter-btn:hover {{
-            background: #3498db;
+            background: var(--accent-color);
             color: white;
         }}
         
         .filter-btn.active {{
-            background: #3498db;
+            background: var(--accent-color);
             color: white;
         }}
         
         .search-box {{
             width: 100%;
             padding: 15px;
-            border: 2px solid #ecf0f1;
-            border-radius: 5px;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
             font-size: 1em;
+            background: var(--card-bg);
+            color: var(--text-primary);
         }}
         
         .charts-container {{
@@ -182,38 +242,40 @@ class InteractiveReportGenerator:
             grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
             gap: 30px;
             padding: 30px;
-            background: white;
+            background: var(--container-bg);
         }}
         
         .chart-card {{
-            background: #f8f9fa;
+            background: var(--card-bg);
             padding: 25px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
         }}
         
         .chart-card h3 {{
             margin-bottom: 20px;
-            color: #2c3e50;
+            color: var(--text-primary);
             text-align: center;
         }}
         
         .vulnerabilities {{
             padding: 30px;
+            background: var(--container-bg);
         }}
         
         .vuln-card {{
-            background: white;
+            background: var(--card-bg);
             border-left: 5px solid;
-            padding: 20px;
-            margin-bottom: 20px;
-            border-radius: 5px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            transition: all 0.3s;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            transition: all 0.3s ease;
         }}
         
         .vuln-card:hover {{
-            box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+            box-shadow: var(--shadow-hover);
             transform: translateX(5px);
         }}
         
@@ -228,16 +290,18 @@ class InteractiveReportGenerator:
             justify-content: space-between;
             align-items: center;
             margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
         }}
         
         .vuln-title {{
             font-size: 1.3em;
             font-weight: bold;
-            color: #2c3e50;
+            color: var(--text-primary);
         }}
         
         .severity-badge {{
-            padding: 5px 15px;
+            padding: 8px 16px;
             border-radius: 20px;
             color: white;
             font-weight: bold;
@@ -252,7 +316,7 @@ class InteractiveReportGenerator:
         .severity-badge.info {{ background: #95a5a6; }}
         
         .vuln-url {{
-            color: #7f8c8d;
+            color: var(--text-secondary);
             font-size: 0.95em;
             margin-bottom: 10px;
             word-break: break-all;
@@ -261,23 +325,26 @@ class InteractiveReportGenerator:
         .vuln-description {{
             margin-bottom: 15px;
             line-height: 1.6;
+            color: var(--text-primary);
         }}
         
         .vuln-evidence {{
-            background: #f8f9fa;
+            background: var(--card-bg);
             padding: 15px;
-            border-radius: 5px;
+            border-radius: 8px;
             font-family: 'Courier New', monospace;
             font-size: 0.9em;
             margin-bottom: 15px;
             white-space: pre-wrap;
             word-break: break-all;
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
         }}
         
         .vuln-remediation {{
             background: #e8f5e9;
             padding: 15px;
-            border-radius: 5px;
+            border-radius: 8px;
             border-left: 4px solid #4caf50;
         }}
         
@@ -286,24 +353,80 @@ class InteractiveReportGenerator:
         }}
         
         .footer {{
-            background: #2c3e50;
+            background: var(--header-bg);
             color: white;
             text-align: center;
-            padding: 20px;
+            padding: 25px;
         }}
         
         .hidden {{
             display: none !important;
         }}
         
+        @media (max-width: 768px) {{
+            body {{
+                padding: 10px;
+            }}
+            
+            .controls-bar {{
+                position: static;
+                justify-content: center;
+                margin-bottom: 20px;
+            }}
+            
+            .header h1 {{
+                font-size: 2em;
+            }}
+            
+            .stats-container {{
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+                padding: 20px;
+            }}
+            
+            .charts-container {{
+                grid-template-columns: 1fr;
+                padding: 20px;
+            }}
+            
+            .filter-group {{
+                flex-direction: column;
+            }}
+            
+            .filter-btn {{
+                width: 100%;
+            }}
+        }}
+        
         @media print {{
-            .controls, .charts-container {{
-                display: none;
+            .controls-bar, .controls, .charts-container {{
+                display: none !important;
+            }}
+            
+            body {{
+                background: white;
+                color: black;
+                padding: 0;
+            }}
+            
+            .container {{
+                box-shadow: none;
+            }}
+            
+            .vuln-card {{
+                page-break-inside: avoid;
             }}
         }}
     </style>
 </head>
 <body>
+    <div class="controls-bar">
+        <button class="control-btn" onclick="toggleTheme()">🌙 Dark Mode</button>
+        <button class="control-btn" onclick="exportToJSON()">📥 Export JSON</button>
+        <button class="control-btn" onclick="exportToCSV()">📊 Export CSV</button>
+        <button class="control-btn" onclick="window.print()">🖨️ Print</button>
+    </div>
+    
     <div class="container">
         <div class="header">
             <h1>🔍 Deep Eye Security Report</h1>
@@ -373,6 +496,67 @@ class InteractiveReportGenerator:
         const vulnerabilities = {vuln_data_json};
         let currentFilter = 'all';
         
+        // Dark Mode Toggle
+        function toggleTheme() {{
+            const html = document.documentElement;
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? '' : 'dark';
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            
+            const btn = document.querySelector('.controls-bar .control-btn');
+            btn.textContent = newTheme === 'dark' ? '☀️ Light Mode' : '🌙 Dark Mode';
+        }}
+        
+        // Load saved theme
+        document.addEventListener('DOMContentLoaded', function() {{
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {{
+                document.documentElement.setAttribute('data-theme', 'dark');
+                const themeBtn = document.querySelector('.controls-bar .control-btn');
+                if (themeBtn) themeBtn.textContent = '☀️ Light Mode';
+            }}
+        }});
+        
+        // Export to JSON
+        function exportToJSON() {{
+            const dataStr = JSON.stringify({{
+                target: '{target}',
+                scan_date: '{scan_time}',
+                vulnerabilities: vulnerabilities
+            }}, null, 2);
+            
+            const blob = new Blob([dataStr], {{type: 'application/json'}});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'deep-eye-report-{target}.json';
+            a.click();
+            URL.revokeObjectURL(url);
+        }}
+        
+        // Export to CSV
+        function exportToCSV() {{
+            let csv = 'Severity,Type,URL,Description,Evidence,Remediation\\n';
+            vulnerabilities.forEach(vuln => {{
+                const severity = vuln.severity || '';
+                const type = (vuln.type || '').replace(/"/g, '""');
+                const url = (vuln.url || '').replace(/"/g, '""');
+                const desc = (vuln.description || '').replace(/"/g, '""');
+                const evidence = (vuln.evidence || '').replace(/"/g, '""');
+                const remediation = (vuln.remediation || '').replace(/"/g, '""');
+                csv += `"${{severity}}","${{type}}","${{url}}","${{desc}}","${{evidence}}","${{remediation}}"\\n`;
+            }});
+            
+            const blob = new Blob([csv], {{type: 'text/csv'}});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'deep-eye-report-{target}.csv';
+            a.click();
+            URL.revokeObjectURL(url);
+        }}
+        
         // Initialize charts
         const severityCtx = document.getElementById('severityChart').getContext('2d');
         const severityChart = new Chart(severityCtx, {{
@@ -381,14 +565,34 @@ class InteractiveReportGenerator:
                 labels: ['Critical', 'High', 'Medium', 'Low', 'Info'],
                 datasets: [{{
                     data: [{severity_stats.get('critical', 0)}, {severity_stats.get('high', 0)}, {severity_stats.get('medium', 0)}, {severity_stats.get('low', 0)}, {severity_stats.get('info', 0)}],
-                    backgroundColor: ['#e74c3c', '#e67e22', '#f39c12', '#3498db', '#95a5a6']
+                    backgroundColor: ['#e74c3c', '#e67e22', '#f39c12', '#3498db', '#95a5a6'],
+                    borderWidth: 2,
+                    borderColor: '#ffffff'
                 }}]
             }},
             options: {{
                 responsive: true,
+                maintainAspectRatio: true,
                 plugins: {{
                     legend: {{
-                        position: 'bottom'
+                        position: 'bottom',
+                        labels: {{
+                            padding: 15,
+                            font: {{
+                                size: 12
+                            }}
+                        }}
+                    }},
+                    tooltip: {{
+                        callbacks: {{
+                            label: function(context) {{
+                                const label = context.label || '';
+                                const value = context.parsed || 0;
+                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                const percentage = total > 0 ? ((value / total) * 100).toFixed(1) : 0;
+                                return label + ': ' + value + ' (' + percentage + '%)';
+                            }}
+                        }}
                     }}
                 }}
             }}
@@ -401,13 +605,15 @@ class InteractiveReportGenerator:
             data: {{
                 labels: Object.keys(typeData),
                 datasets: [{{
-                    label: 'Count',
+                    label: 'Vulnerability Count',
                     data: Object.values(typeData),
-                    backgroundColor: '#3498db'
+                    backgroundColor: '#3498db',
+                    borderWidth: 0
                 }}]
             }},
             options: {{
                 responsive: true,
+                maintainAspectRatio: true,
                 plugins: {{
                     legend: {{
                         display: false
@@ -415,7 +621,10 @@ class InteractiveReportGenerator:
                 }},
                 scales: {{
                     y: {{
-                        beginAtZero: true
+                        beginAtZero: true,
+                        ticks: {{
+                            stepSize: 1
+                        }}
                     }}
                 }}
             }}
